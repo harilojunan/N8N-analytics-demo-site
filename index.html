@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechFlow Solutions - Analytics Demo Site</title>
+    <meta name="description" content="A comprehensive demo website for testing Google Analytics integration with N8N workflows">
+    <meta name="keywords" content="analytics, demo, website, tracking, google analytics, n8n">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 2rem 0;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .form-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 3rem 0;
+            text-align: center;
+            color: white;
+            margin-top: 4rem;
+        }
+        
+        .analytics-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            max-width: 300px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cta-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+    
+    <!-- Google Analytics 4 - Replace with your Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'TechFlow Solutions Demo',
+            custom_map: {'custom_parameter_1': 'user_engagement_level'}
+        });
+    </script>
+    
+    <!-- Enhanced Event Tracking -->
+    <script>
+        // Initialize tracking variables
+        let pageStartTime = Date.now();
+        let scrollDepth = 0;
+        let maxScrollDepth = 0;
+        let interactions = 0;
+        
+        // Track page load
+        window.addEventListener('load', function() {
+            gtag('event', 'page_load_complete', {
+                event_category: 'Page Performance',
+                event_label: 'Initial Load',
+                value: Date.now() - pageStartTime
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="trackEvent('Navigation', 'logo_click')">🚀 TechFlow</a>
+            <ul class="nav-links">
+                <li><a href="#home" onclick="trackEvent('Navigation', 'home_click')">Home</a></li>
+                <li><a href="#features" onclick="trackEvent('Navigation', 'features_click')">Features</a></li>
+                <li><a href="#about" onclick="trackEvent('Navigation', 'about_click')">About</a></li>
+                <li><a href="#contact" onclick="trackEvent('Navigation', 'contact_click')">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Analytics Made Simple</h1>
+            <p>Comprehensive demo website for testing Google Analytics integration with N8N automation workflows</p>
+            <div class="cta-group">
+                <button class="btn btn-primary" onclick="trackConversion('primary_cta')">Get Started Free</button>
+                <button class="btn btn-secondary" onclick="trackEvent('CTA', 'demo_request')">Request Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section">
+        <div class="container">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="userCount">1,247</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="sessionCount">5,432</span>
+                    <span class="stat-label">Sessions Today</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="eventCount">12,345</span>
+                    <span class="stat-label">Events Tracked</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">99.9%</span>
+                    <span class="stat-label">Uptime</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Platform Features</h2>
+            <div class="features">
+                <div class="feature-card" onclick="trackEvent('Feature', 'analytics_click')">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track user behavior and website performance in real-time with comprehensive dashboards.</p>
+                    <button class="btn btn-primary" onclick="trackEvent('Feature', 'learn_more_analytics')">Learn More</button>
+                </div>
+                
+                <div class="feature-card" onclick="trackEvent('Feature', 'automation_click')">
+                    <div class="feature-icon">⚡</div>
+                    <h3>N8N Automation</h3>
+                    <p>Seamlessly integrate with N8N workflows for automated reporting and data processing.</p>
+                    <button class="btn btn-primary" onclick="trackEvent('Feature', 'learn_more_automation')">Learn More</button>
+                </div>
+                
+                <div class="feature-card" onclick="trackEvent('Feature', 'insights_click')">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Insights</h3>
+                    <p>Generate actionable insights from your data with AI-powered analysis and recommendations.</p>
+                    <button class="btn btn-primary" onclick="trackEvent('Feature', 'learn_more_insights')">Learn More</button>
+                </div>
+                
+                <div class="feature-card" onclick="trackEvent('Feature', 'integration_click')">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Easy Integration</h3>
+                    <p>Connect with over 1000+ tools and services through our comprehensive API ecosystem.</p>
+                    <button class="btn btn-primary" onclick="trackEvent('Feature', 'learn_more_integration')">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Actions Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Test Analytics Events</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <h3>🎲 Generate Sample Events</h3>
+                    <p>Create various analytics events to populate your dashboard with test data.</p>
+                    <button class="btn btn-primary" onclick="generateBulkEvents()">Generate Events</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>🛒 E-commerce Simulation</h3>
+                    <p>Simulate purchase events and conversion tracking for e-commerce analytics.</p>
+                    <button class="btn btn-primary" onclick="simulateEcommerce()">Simulate Purchase</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>📱 User Engagement</h3>
+                    <p>Track user interactions, time on page, and engagement metrics.</p>
+                    <button class="btn btn-primary" onclick="trackEngagement()">Track Engagement</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>📧 Lead Generation</h3>
+                    <p>Test form submissions and lead tracking capabilities.</p>
+                    <button class="btn btn-primary" onclick="openContactForm()">Open Form</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="form-section">
+                <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" placeholder="Your company name">
+                    </div>
+                    <div class="form-group">
+                        <label for="interest">Interest Level</label>
+                        <select id="interest" name="interest" onchange="trackEvent('Form', 'interest_selected', this.value)">
+                            <option value="">Select your interest level</option>
+                            <option value="high">High - Ready to implement</option>
+                            <option value="medium">Medium - Exploring options</option>
+                            <option value="low">Low - Just researching</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell us about your needs..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 TechFlow Solutions - Demo Website for Analytics Testing</p>
+            <p>This is a sample website designed for Google Analytics and N8N integration testing</p>
+        </div>
+    </footer>
+
+    <!-- Analytics Panel -->
+    <div class="analytics-panel">
+        <strong>Analytics Status</strong><br>
+        Events Fired: <span id="eventCounter">0</span><br>
+        Time on Page: <span id="timeCounter">0</span>s<br>
+        Scroll Depth: <span id="scrollCounter">0</span>%
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Event Tracked Successfully!</h2>
+            <p id="modalMessage">Your interaction has been recorded in Google Analytics.</p>
+        </div>
+    </div>
+
+    <!-- Enhanced JavaScript for Analytics -->
+    <script>
+        let eventCount = 0;
+        let startTime = Date.now();
+        let maxScroll = 0;
+
+        // Update analytics panel
+        function updateAnalyticsPanel() {
+            document.getElementById('eventCounter').textContent = eventCount;
+            document.getElementById('timeCounter').textContent = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('scrollCounter').textContent = Math.floor(maxScroll);
+        }
+
+        // Enhanced event tracking
+        function trackEvent(category, action, label = '', value = 1) {
+            gtag('event', action, {
+                event_category: category,
+                event_label: label,
+                value: value,
+                custom_parameter_1: 'demo_site'
+            });
+            
+            eventCount++;
+            updateAnalyticsPanel();
+            console.log(`Event: ${category} - ${action} - ${label}`);
+        }
+
+        // Conversion tracking
+        function trackConversion(type) {
+            gtag('event', 'conversion', {
+                event_category: 'Conversion',
+                event_label: type,
+                value: 1
+            });
+            
+            gtag('event', 'purchase', {
+                transaction_id: 'T' + Date.now(),
+                value: 99.99,
+                currency: 'USD',
+                items: [{
+                    item_id: 'DEMO001',
+                    item_name: 'Demo Product',
+                    category: 'Software',
+                    quantity: 1,
+                    price: 99.99
+                }]
+            });
+            
+            showModal('Conversion tracked! Check your Google Analytics dashboard.');
+        }
+
+        // Generate bulk events
+        function generateBulkEvents() {
+            const events = [
+                {category: 'Engagement', action: 'video_play', label: 'hero_video'},
+                {category: 'Engagement', action: 'scroll_depth', label: '75%'},
+                {category: 'Social', action: 'share', label: 'twitter'},
+                {category: 'Social', action: 'share', label: 'linkedin'},
+                {category: 'Download', action: 'whitepaper', label: 'analytics_guide'},
+                {category: 'User', action: 'search', label: 'internal_search'},
+                {category: 'Content', action: 'read_article', label: 'blog_post_1'},
+                {category: 'Feature', action: 'demo_request', label: 'pricing_page'},
+                {category: 'Support', action: 'chat_initiated', label: 'help_section'},
+                {category: 'Newsletter', action: 'signup', label: 'footer_form'}
+            ];
+
+            events.forEach((event, index) => {
+                setTimeout(() => {
+                    trackEvent(event.category, event.action, event.label);
+                }, index * 300);
+            });
+
+            showModal('Generated 10 sample events! Check your real-time analytics.');
+        }
+
+        // Simulate e-commerce events
+        function simulateEcommerce() {
+            // Add to cart
+            gtag('event', 'add_to_cart', {
+                currency: 'USD',
+                value: 49.99,
+                items: [{
+                    item_id: 'DEMO_PRODUCT_1',
+                    item_name: 'Analytics Pro Plan',
+                    category: 'Subscription',
+                    quantity: 1,
+                    price: 49.99
+                }]
+            });
+
+            // Begin checkout
+            setTimeout(() => {
+                gtag('event', 'begin_checkout', {
+                    currency: 'USD',
+                    value: 49.99,
+                    items: [{
+                        item_id: 'DEMO_PRODUCT_1',
+                        item_name: 'Analytics Pro Plan',
+                        category: 'Subscription',
+                        quantity: 1,
+                        price: 49.99
+                    }]
+                });
+            }, 1000);
+
+            // Purchase
+            setTimeout(() => {
+                gtag('event', 'purchase', {
+                    transaction_id: 'T' + Date.now(),
+                    value: 49.99,
+                    currency: 'USD',
+                    tax: 4.99,
+                    shipping: 0,
+                    items: [{
+                        item_id: 'DEMO_PRODUCT_1',
+                        item_name: 'Analytics Pro Plan',
+                        category: 'Subscription',
+                        quantity: 1,
+                        price: 49.99
+                    }]
+                });
+            }, 2000);
+
+            trackEvent('Ecommerce', 'simulation_complete', 'full_funnel');
+            showModal('E-commerce simulation complete! Purchase tracked with full funnel data.');
+        }
+
+        // Track engagement
+        function trackEngagement() {
+            gtag('event', 'engagement_test', {
+                event_category: 'User Engagement',
+                engagement_time_msec: (Date.now() - startTime),
+                custom_parameter_1: 'high_engagement'
+            });
+
+            showModal('Engagement event tracked with time spent: ' + Math.floor((Date.now() - startTime) / 1000) + ' seconds');
+        }
+
+        // Form handling
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            gtag('event', 'form_submit', {
+                event_category: 'Lead Generation',
+                event_label: 'contact_form',
+                custom_parameter_1: data.interest || 'not_specified'
+            });
+
+            gtag('event', 'generate_lead', {
+                event_category: 'Conversion',
+                event_label: 'contact_form',
+                value: 1
+            });
+
+            trackEvent('Form', 'submission_complete', 'contact_form');
+            showModal('Form submitted successfully! Lead generation event tracked.');
+            event.target.reset();
+        }
+
+        // Modal functions
+        function showModal(message) {
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function openContactForm() {
+            document.getElementById('contact').scrollIntoView({behavior: 'smooth'});
+            trackEvent('Navigation', 'scroll_to_form', 'lead_generation');
+        }
+
+        // Scroll tracking
+        window.addEventListener('scroll', function() {
+            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+            
+            if (scrollPercent > maxScroll) {
+                maxScroll = scrollPercent;
+                updateAnalyticsPanel();
+                
+                // Track scroll milestones
+                if (scrollPercent > 0 && scrollPercent % 25 === 0 && scrollPercent <= 100) {
+                    trackEvent('Engagement', 'scroll_depth', scrollPercent + '%');
+                }
+            }
+        });
+
+        // Page visibility tracking
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                gtag('event', 'page_hidden', {
+                    event_category: 'Page Visibility',
+                    time_spent: Date.now() - startTime
+                });
+            } else {
+                gtag('event', 'page_visible', {
+                    event_category: 'Page Visibility'
+                });
+            }
+        });
+
+        // Update timers
+        setInterval(updateAnalyticsPanel, 1000);
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Track page load performance
+        window.addEventListener('load', function() {
+            gtag('event', 'page_load_complete', {
+                event_category: 'Performance',
+                value: performance.now()
+            });
+        });
+    </script>
+</body>
+</html>
